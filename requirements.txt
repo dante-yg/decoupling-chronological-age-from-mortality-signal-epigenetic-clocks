@@ -1,0 +1,20 @@
+# Python 3.12.9
+numpy==2.0.2
+pandas==2.2.3
+scipy==1.15.2
+scikit-learn==1.6.1
+scikit-survival==0.24.0
+lifelines==0.30.0
+optuna==4.7.0
+torch==2.10.0
+torchtuples==0.2.2
+pycox==0.3.0
+pyaging==0.1.30
+anndata==0.12.17
+pyarrow==24.0.0
+neuroCombat==0.2.12
+matplotlib==3.10.1
+seaborn==0.13.2
+joblib==1.4.2
+tqdm==4.67.1
+jupyter==1.1.1

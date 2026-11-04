@@ -27,7 +27,7 @@ To find the code behind a particular table or figure, see [PAPER_TO_CODE.md](PAP
 - Jupyter, for the notebooks
 - R, only for the cell-composition and calibration cross-check scripts in `06_revision_analyses`
 
-The package versions used for the clock analysis are listed in [environment_used_for_clock_audit.txt](environment_used_for_clock_audit.txt).
+Exact versions are pinned in [requirements.txt](requirements.txt).
 
 ## Data
 
@@ -40,9 +40,9 @@ The FHS (phs000007) and WHI (phs000200) data are controlled-access and are not i
    git clone https://github.com/dante-yg/decoupling-chronological-age-from-mortality-signal-epigenetic-clocks.git
    cd decoupling-chronological-age-from-mortality-signal-epigenetic-clocks
    ```
-2. Install the packages:
+2. Install the packages at the versions we used:
    ```bash
-   pip install numpy pandas scikit-learn scikit-survival lifelines optuna torch torchtuples pycox pyaging anndata pyarrow neuroCombat matplotlib seaborn jupyter
+   pip install -r requirements.txt
    ```
 3. Set the file paths. The scripts use absolute paths from our analysis machine, such as `C:\F\base_3`. Replace these with your own folders. The main folder should contain `data/`, `predictions/`, `saved_models/`, `scalers/`, `figures/` and `logs/`.
 4. Run the folders in order, starting Jupyter from the main folder:

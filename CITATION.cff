@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the article below."
+title: "Decoupling chronological-age signal from mortality signal across first- and second-generation epigenetic clocks: analysis code"
+type: software
+license: MIT
+repository-code: "https://github.com/dante-yg/decoupling-chronological-age-from-mortality-signal-epigenetic-clocks"
+authors:
+  - family-names: Gogul
+    given-names: Muthukumar Yugan
+    affiliation: "Department of Biological Science, Chosun University, Gwangju, Republic of Korea"
+  - family-names: Vijayakumar
+    given-names: Karthikeyan A.
+    affiliation: "Department of Biological Science, Chosun University, Gwangju, Republic of Korea"
+  - family-names: Cho
+    given-names: Gwang-Won
+    affiliation: "Department of Biological Science, Chosun University, Gwangju, Republic of Korea"
+keywords:
+  - epigenetic clocks
+  - DNA methylation
+  - survival analysis
+  - mortality
+  - aging
+preferred-citation:
+  type: article
+  title: "Decoupling chronological-age signal from mortality signal across first- and second-generation epigenetic clocks"
+  journal: "Archives of Gerontology and Geriatrics"
+  status: submitted
+  authors:
+    - family-names: Gogul
+      given-names: Muthukumar Yugan
+    - family-names: Vijayakumar
+      given-names: Karthikeyan A.
+    - family-names: Cho
+      given-names: Gwang-Won
