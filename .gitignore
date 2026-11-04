@@ -67,3 +67,16 @@ data/WHI_non_normalized.csv
 data/Disease_data_with_censoring.csv
 data/Disease_data_arranaged.xlsx
 pyaging_data/
+
+# Never commit data, results or figures (dbGaP controlled-access)
+data/*
+!data/README.md
+figures/
+*.parquet
+*.csv
+*.xlsx
+*.joblib
+*.pt
+*.model
+*.tif
+AUTHOR_NOTES.md

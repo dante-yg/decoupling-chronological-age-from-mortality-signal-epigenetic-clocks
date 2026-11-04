@@ -1,0 +1,26 @@
+Operating System: Windows 11 Enterprise (10.0.26100)
+Python Version: 3.11.4 (tags/v3.11.4:d2340ef, Jun  7 2023, 05:45:37) [MSC v.1934 64 bit (AMD64)]
+
+Package Versions:
+pyaging: 0.1.30
+torch: 2.5.1+cpu
+anndata: 0.11.1
+pyarrow: 18.1.0
+pandas: 2.2.3
+numpy: 2.0.2
+scipy: 1.14.1
+lifelines: 0.30.0
+scikit-learn: 1.5.2
+
+Clock Models Evaluated (pyaging weights repository: https://pyaging.s3.amazonaws.com/clocks/weights0.1.0/):
+1. horvath2013 (Horvath 2013 pan-tissue epigenetic clock, 353 CpGs)
+2. hannum (Hannum 2013 whole-blood epigenetic clock, 71 features: 69 CpGs + 2 non-CpG probes)
+3. dnamphenoage (Levine et al. 2018 DNAm PhenoAge epigenetic clock, 513 CpGs)
+4. grimage (Lu et al. 2019 DNAm GrimAge epigenetic clock, 1,032 features: 1,030 CpGs + chronological age + female sex indicator)
+
+Cohort Sample Sizes:
+FHS development cohort: N = 3,493 subjects (634 deaths)
+  - Training split: N = 2,095
+  - Validation split: N = 699
+  - Test split: N = 699
+WHI external validation cohort: N = 196 subjects (56 deaths)
