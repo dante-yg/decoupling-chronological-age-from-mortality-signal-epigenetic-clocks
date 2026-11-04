@@ -1,100 +1,65 @@
-# Decoupling chronological-age signal from mortality signal — analysis code
+# Decoupling chronological-age signal from mortality signal across first- and second-generation epigenetic clocks
 
-This folder holds the code behind the study *"Decoupling chronological-age signal from mortality signal across first- and second-generation epigenetic clocks"*. The study tests whether 10 CpGs selected for age prediction (EpiClock) carry mortality information beyond chronological age, using the Framingham Heart Study (FHS) for model development and the Women's Health Initiative (WHI) for external validation, and compares them with Horvath, Hannum, PhenoAge and GrimAge.
+This repository contains the analysis code for our study testing whether ten CpGs selected for age prediction (EpiClock) also carry information about mortality once chronological age is taken into account. Models were developed in the Framingham Heart Study (FHS) and validated in the Women's Health Initiative (WHI), and the results were compared with the Horvath, Hannum, PhenoAge and GrimAge clocks.
 
-Every file here is the version that produced the reported results. Notebooks have had their outputs cleared, because printed cells can contain participant-level data.
+[![Graphical abstract](docs/graphical_abstract.png)](docs/graphical_abstract.png)
 
----
+## Usage
 
-## 1. Folder layout
+The folders are numbered in the order they are run.
 
-| Folder | What it does |
-|---|---|
-| `01_preprocessing/` | Raw 450K data → QC, KNN imputation (k = 5), ComBat batch correction. Exported from the original Jupyter notebooks; run cell by cell. |
-| `02_model_training/` | Trains the five survival learners (CoxNet, MTLR, Weibull-AFT, RSF, survival SVM) and the stacking meta-learner, for both feature sets. |
-| `03_epigenetic_clocks/` | Computes Horvath, Hannum, PhenoAge and GrimAge with `pyaging`. |
-| `04_main_analyses/` | Risk score → age calibration, age/sex-adjusted Cox models, head-to-head clock comparison. |
-| `05_figures_and_tables/` | One notebook that builds every manuscript figure and table from the saved outputs. |
-| `06_revision_analyses/` | Analyses added in response to reviewers, one subfolder per comment. |
-| `07_supporting_analyses/` | Robustness checks run during the study that are not reported as main results. |
-| `data/` | Empty. Describes the input files you must create from dbGaP data. |
+1. **01_preprocessing**: quality control of the 450K methylation data, KNN imputation and ComBat batch correction.
+2. **02_model_training**: trains CoxNet, Weibull AFT, survival SVM, MTLR and random survival forest on the 10 CpGs, with and without four clinical markers, plus a stacked ensemble.
+3. **03_epigenetic_clocks**: calculates the Horvath, Hannum, PhenoAge and GrimAge clocks with pyaging.
+4. **04_main_analyses**: converts the CoxNet risk score to years and fits Cox models with and without adjustment for age and sex, for our score and for each clock.
+5. **05_figures_and_tables**: produces the manuscript figures and tables from the saved results.
 
-`PAPER_TO_CODE.md` maps each table and figure to the exact file that produces it.
+Two further folders are optional:
 
----
+- **06_revision_analyses**: additional analyses requested during peer review, one subfolder per reviewer comment.
+- **07_supporting_analyses**: robustness checks that are not reported in the manuscript.
 
-## 2. Requirements
+To find the code behind a particular table or figure, see [PAPER_TO_CODE.md](PAPER_TO_CODE.md).
 
-- Python with: `numpy`, `pandas`, `scikit-learn`, `scikit-survival`, `lifelines`, `optuna`, `torch`, `torchtuples`, `pycox`, `pyaging`, `anndata`, `pyarrow`, `neuroCombat`, `matplotlib`, `seaborn`, `joblib`
-- R (only for `deconvolution.R` and the R cross-check called by `reviewer1_calibration_final_model.py`)
-- Jupyter, to run the `.ipynb` files
+## Requirements
 
-`environment_used_for_clock_audit.txt` records the exact versions on the analysis machine at the time of the clock audit.
+- Python 3.11 with numpy, pandas, scikit-learn, scikit-survival, lifelines, optuna, PyTorch, torchtuples, pycox, pyaging, anndata, pyarrow, neuroCombat, matplotlib and seaborn
+- Jupyter, for the notebooks
+- R, only for the cell-composition and calibration cross-check scripts in `06_revision_analyses`
 
----
+The package versions used for the clock analysis are listed in [environment_used_for_clock_audit.txt](environment_used_for_clock_audit.txt).
 
-## 3. Data
+## Data
 
-FHS (dbGaP phs000007) and WHI (dbGaP phs000200) are controlled-access, so no data are included. After obtaining access, create the files described in `data/README.md`.
+The FHS (phs000007) and WHI (phs000200) data are controlled-access and are not included here. Access can be requested through [dbGaP](https://www.ncbi.nlm.nih.gov/gap/). The input files the code expects, and their columns, are described in [data/README.md](data/README.md).
 
----
+## Getting started
 
-## 4. Before running: set the paths
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dante-yg/decoupling-chronological-age-from-mortality-signal-epigenetic-clocks.git
+   cd decoupling-chronological-age-from-mortality-signal-epigenetic-clocks
+   ```
+2. Install the packages:
+   ```bash
+   pip install numpy pandas scikit-learn scikit-survival lifelines optuna torch torchtuples pycox pyaging anndata pyarrow neuroCombat matplotlib seaborn jupyter
+   ```
+3. Set the file paths. The scripts use absolute paths from our analysis machine, such as `C:\F\base_3`. Replace these with your own folders. The main folder should contain `data/`, `predictions/`, `saved_models/`, `scalers/`, `figures/` and `logs/`.
+4. Run the folders in order, starting Jupyter from the main folder:
+   ```bash
+   jupyter notebook
+   ```
 
-The code uses absolute Windows paths. Replace these roots with your own locations:
+Model training in `02_model_training` takes several hours because of hyperparameter tuning. The later steps read saved predictions and run in a few minutes.
 
-| Path in the code | Meaning | Used by |
-|---|---|---|
-| `C:\F\base_3` | **Project root.** Holds `data/`, `predictions/`, `saved_models/`, `scalers/`, `figures/`, `logs/` | Almost every step |
-| `C:\F\base_2\data` | Second copy of the same input files | `integrated_pipeline_cpg`, both stacking notebooks |
-| `C:\Yugan_Gogul\...` | Raw and full-matrix methylation files | `01_preprocessing/`, GrimAge probe audit |
-| `F:\dbgap\` | Full methylation matrices (`FHS_methylation_merged.parquet`, `WHI_full_imputed.parquet`) | `03_epigenetic_clocks/`, cell-composition analysis |
-| `D:\...`, `C:\Neural_network_survival_WHI\` | Extra dbGaP files used only in the revision (blood counts, Gen3 exam 2 clinical, WHI BA23 N = 1,818) | `06_revision_analyses/` |
-| `C:\sharing\base_3` | Same as the project root, on a second machine | GrimAge probe audit |
+More detail on each step, including the exact input and output files and the main settings, is in [docs/DETAILS.md](docs/DETAILS.md).
 
-Notebooks without an absolute path (e.g. `clocks_comparison`, `figures_and_tables`) read `predictions/...` relative to where they are started, so **start Jupyter from the project root.**
+## Citation
 
----
+If you use this code, please cite:
 
-## 5. Run order
+Gogul MY, Vijayakumar KA, Cho GW. Decoupling chronological-age signal from mortality signal across first- and second-generation epigenetic clocks. *Archives of Gerontology and Geriatrics* (under review).
 
-Each step reads the outputs of the step before it. `{RUN_ID}` is `V3_OPTUNA_SS` for the CpG + clinical model and `V3_OPTUNA_SS_CPG` for the CpG-only model. `{split}` is `train`, `val`, `test` or `whi`.
+## License
 
-| # | File | Reads | Writes |
-|---|---|---|---|
-| 1 | `01_preprocessing/01_fhs_raw_processing.py` | FHS raw 450K files (Gen 3, JHU, UMN batches) | Cleaned FHS methylation files |
-| 2 | `01_preprocessing/02_whi_raw_processing_knn_imputation.py` | WHI raw 450K file + WHI metadata | `WHI_imputed_knn5` (probes > 10 % missing dropped, KNN k = 5) |
-| 3 | `01_preprocessing/03_combat_batch_correction.py` | Full FHS + WHI matrices | ComBat-corrected full matrix (neuroCombat on M-values, age and sex protected) |
-| — | *(not in this folder; see `data/README.md`)* | Outputs of steps 1–3 + phenotype files | `data/FHS_non_normalized.csv`, `data/WHI_non_normalized.csv`, `data/Disease_data_with_censoring.csv` |
-| 4 | `02_model_training/integrated_pipeline.ipynb` | `data/FHS_non_normalized.csv`, `data/WHI_non_normalized.csv` | 60/20/20 split (seed 42); per-model predictions `predictions/{model}_{split}_{RUN_ID}.csv`; out-of-fold stacking inputs `predictions/stacking_{split}_{RUN_ID}.csv`; `base_model_cindex_summary_{RUN_ID}.csv`; `base_model_feature_importance_{RUN_ID}.csv`; models in `saved_models/`, scalers in `scalers/` |
-| 5 | `02_model_training/integrated_pipeline_cpg.ipynb` | Same inputs, CpGs only | Same outputs with the `_CPG` run ID |
-| 6 | `02_model_training/stacking_coxmlp.ipynb` and `stacking_coxmlp_cpg.ipynb` | `predictions/stacking_{split}_{RUN_ID}.csv` | `predictions/stacking_predictions_{split}_{RUN_ID}.csv` |
-| 7 | `03_epigenetic_clocks/estimate_biological_clocks.py` | Full methylation matrices | `predictions/fhs_biological_clocks.csv`, `predictions/whi_biological_clocks.csv` |
-| 8 | `04_main_analyses/coxnet_age_predictor.ipynb` | CoxNet predictions | `predictions/coxnet_age_predictions_{split}_{RUN_ID}.csv` (risk score rescaled to years) |
-| 9 | `04_main_analyses/all_models_risk_score_survival.ipynb` | All model predictions | `predictions/all_models_risk_score_hazard_ratios_{adjusted,unadjusted}.csv` |
-| 10 | `04_main_analyses/clocks_comparison.ipynb` | Steps 7–8 + SVM predictions | `predictions/clocks_comparison_hazard_ratios_{adjusted,unadjusted}.csv`, `clocks_comparison_cindex.csv`, `clocks_comparison_age_correlations.csv` |
-| 11 | `05_figures_and_tables/figures_and_tables.ipynb` | Everything in `predictions/` + `data/` | All manuscript figures and Tables 1–3 in `figures/` |
-
-Steps 4–5 run Optuna hyperparameter tuning and take the longest. Steps 8–11 only read saved predictions and run in minutes.
-
-The revision scripts in `06_revision_analyses/` all start from the saved predictions, models and scalers of steps 4–10. Each script's header lists what it reads and writes, and none of them retrain the published models.
-
----
-
-## 6. Key settings
-
-| Setting | Value | Where |
-|---|---|---|
-| Random seed | 42 (NumPy, PyTorch, splits, CV, models) | Training notebooks |
-| FHS split | 60 / 20 / 20, stratified on event; train 2,095, val 699, test 699 | `integrated_pipeline*.ipynb` |
-| Scaling | `StandardScaler` fit on the training split only, then applied to val, test and WHI | Same |
-| Tuning | Optuna, 10–15 trials per learner, 3-fold stratified CV on the training split | Same |
-| Stacking | 5-fold out-of-fold predictions → CoxMLP meta-learner | `stacking_coxmlp*.ipynb` |
-| Final model | CoxNet, CpG + clinical (`V3_OPTUNA_SS`); "risk score" = its linear predictor | — |
-| Clock comparison | Cox models unadjusted and adjusted for age and sex (sex dropped in WHI, which is all female). HRs per 1 year of predicted age (original Table 3); per-SD HRs in Figure 2 and the rebuilt Table 3 | `clocks_comparison.ipynb`, `figures_and_tables.ipynb`, `reviewer_table3_rebuild.py` |
-
----
-
-## 7. License
-
-MIT — see `LICENSE`.
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
