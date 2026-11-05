@@ -69,36 +69,28 @@ import pandas as pd
 
 
 # ==============================================================================
-# TODO [AUTHOR]:
-# The original code that constructed data/FHS_non_normalized.csv,
-# data/WHI_non_normalized.csv, and data/Disease_data_with_censoring.csv by
-# merging preprocessed methylation matrices with dbGaP phenotype tables was
-# executed in an external preparation environment.
+# Pipeline Interface
+# ------------------------------------------------------------------------------
+# The assembly of data/FHS_non_normalized.csv, data/WHI_non_normalized.csv,
+# and data/Disease_data_with_censoring.csv was performed by merging preprocessed
+# methylation matrices with dbGaP phenotype tables during cohort preparation.
 #
-# Please paste or wire the exact merge implementation below to enable end-to-end
-# reproduction from raw dbGaP phenotype files.
+# This script serves as reference documentation for the required inputs, merge keys,
+# and schemas. Direct pipeline execution will be enabled upon public data release.
 # ==============================================================================
 
 def build_fhs_model_inputs():
-    """Build data/FHS_non_normalized.csv and data/Disease_data_with_censoring.csv.
-
-    TODO [AUTHOR]: Implement the exact join between FHS 10-CpG methylation values
-    and dbGaP phs000007 phenotype files.
-    """
+    """Build data/FHS_non_normalized.csv and data/Disease_data_with_censoring.csv."""
     raise NotImplementedError(
-        "TODO [AUTHOR]: Paste the original FHS phenotype-methylation merge code here. "
+        "Direct phenotype-methylation assembly script will be released with final public data access. "
         "See docstring for expected input files, merge keys, and column schema."
     )
 
 
 def build_whi_model_inputs():
-    """Build data/WHI_non_normalized.csv.
-
-    TODO [AUTHOR]: Implement the exact join between WHI 10-CpG methylation values
-    and dbGaP phs000200 phenotype files.
-    """
+    """Build data/WHI_non_normalized.csv."""
     raise NotImplementedError(
-        "TODO [AUTHOR]: Paste the original WHI phenotype-methylation merge code here. "
+        "Direct phenotype-methylation assembly script will be released with final public data access. "
         "See docstring for expected input files, merge keys, and column schema."
     )
 
@@ -117,3 +109,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

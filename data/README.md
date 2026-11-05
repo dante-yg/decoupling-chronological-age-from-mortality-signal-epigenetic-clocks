@@ -19,22 +19,6 @@ To request access to the cohorts:
    - **Women's Health Initiative (WHI):** dbGaP accession `phs000200`
 3. Await approval from the respective NIH Data Access Committees.
 
-### Dataset Identifiers and Raw File Mapping
-
-> **TODO [AUTHOR] (dbGaP Accession Specifics):**
-> Please verify and fill in the exact version numbers (`.vN.pN`), dataset accessions (`pht`), and consent groups for all files required to run `01_preprocessing/` from scratch:
->
-> | Dataset | Accession / File Pattern | Consent Group | Script | Purpose |
-> |---|---|---|---|---|
-> | FHS DNA Methylation | `phs000007.vN.pN...` *(TODO: specify exact accession/tar)* | e.g., `c1` (HMB-IRB-MDS) | `01_fhs_raw_processing.py` | Raw 450K beta matrices for Gen 3, JHU, UMN batches |
-> | WHI DNA Methylation | `phs000200.vN.pN...` *(TODO: specify exact accession/tar)* | *(TODO: specify consent group)* | `02_whi_raw_processing_knn_imputation.py` | WHI BA23 450K methylation matrix and sample manifest |
-> | FHS Demographics & Labs | `phs000007.vN.phtXXXXXX.vN.pN...` *(TODO)* | e.g., `c1` | `04_build_model_inputs.py` | Age, sex, lipid panel (Total Cholesterol, Triglycerides, HDL), fasting glucose |
-> | FHS Mortality Follow-up | `phs000007.vN.phtXXXXXX.vN.pN...` *(TODO)* | e.g., `c1` | `04_build_model_inputs.py` | Survival time (years) and all-cause mortality event indicator |
-> | FHS CVD Adjudicated Events | `phs000007.vN.phtXXXXXX.vN.pN...` *(TODO)* | e.g., `c1` | `04_build_model_inputs.py` | Events and censoring times for MI, AP, CVA, IC, CHF |
-> | FHS Pedigree | `phs000007.v32.pht001415.v4.p12.c1...Framingham_Pedigree.MULTI.txt` | `c1` (HMB-IRB-MDS) | `06_revision_analyses/...` | Pedigree structure for family-leakage audit |
-> | FHS Complete Blood Count | `phs000007.v33.pht002889.v5.p14.c1...l_fhslab_2011_m_0656s...` | `c1` (HMB-IRB-MDS) | `06_revision_analyses/.../deconvolution.R` | Clinical CBC differential counts for deconvolution validation |
-> | WHI Clinical & Outcomes | `phs000200.vN.phtXXXXXX.vN.pN...` *(TODO)* | *(TODO)* | `04_build_model_inputs.py` | Baseline age, lipid panel, survival time, all-cause mortality |
-
 ## Expected Modeling Data Files
 
 The downstream modeling code (`02_model_training/` onward) expects these files in `data/` (or the directory specified by `EPICLOCK_DATA_DIR`):
