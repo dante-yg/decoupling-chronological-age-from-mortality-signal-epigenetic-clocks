@@ -1,3 +1,30 @@
+"""Audit and classify GrimAge CpG probes missing from FHS and WHI 450K matrices.
+
+================================================================================
+GRIMAGE PROBE AUDIT: CLASSIFY MISSING PROBES
+================================================================================
+
+PURPOSE:
+GrimAge requires 1,030 CpG probes. In the preprocessed FHS matrix, 201 probes are
+absent (829 present); in WHI, 3 are absent (1,027 present). This script audits the
+probes against the Illumina HumanMethylation450 manifest and the raw batch files
+(Gen 3, JHU, UMN) to determine:
+  1. How many missing probes are genuinely absent from the 450K array design (12 probes).
+  2. How many were lost during batch-filtering / QC in dbGaP processing (109 probes).
+  3. Which missing probes can be recovered from the raw FHS batch files.
+
+INPUTS:
+- GrimAge model weights: config.PYAGING_DIR / "grimage.pt"
+- FHS 450K parquet: config.DATA_DIR / "FHS_methylation_merged.parquet"
+- WHI 450K parquet: config.DATA_DIR / "WHI_full_imputed.parquet"
+- 450K manifest: HM450.hg19.manifest.tsv.gz (via EPICLOCK_MANIFEST_PATH)
+- Raw FHS batch files: Gen3, JHU, UMN common_probes.csv / Filtered_SNP_*.csv
+
+OUTPUTS:
+- Console audit summary detailing probe classifications across 450K manifest,
+  FHS batches, and WHI cohort.
+"""
+
 import sys
 from pathlib import Path
 _repo_root = Path(__file__).resolve().parent
@@ -84,9 +111,9 @@ print(f"\nWHI-absent GrimAge CpGs on 450K array: {len(absent_whi_on_450k)}")
 print(f"WHI-absent GrimAge CpGs NOT on 450K array: {len(absent_whi_not_on_450k)}")
 print(f"  WHI-absent details: {absent_whi}")
 
-# 4. Check the common_probes files in D:\FHS_processed
+# 4. Check the common_probes files in FHS raw processed directory
 # In these files, first column has probe names.
-print("\nChecking probe IDs in D:\\FHS_processed common_probes files...")
+print(f"\nChecking probe IDs in {FHS_RAW_DIR} common_probes files...")
 batch_common = {}
 for b in ["Gen3", "JHU", "UMN"]:
     p = os.path.join(FHS_RAW_DIR, f"{b}_common_probes.csv")

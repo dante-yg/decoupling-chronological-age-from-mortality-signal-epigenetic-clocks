@@ -1,3 +1,28 @@
+"""Evaluate WHI GrimAge sensitivity by masking probes absent in FHS.
+
+================================================================================
+GRIMAGE PROBE AUDIT: WHI SENSITIVITY ANALYSIS (MASKING EXPERIMENT)
+================================================================================
+
+PURPOSE:
+Tests whether the missing CpGs in FHS influenced the external validation results
+in WHI. Generates 'masked' GrimAge scores in WHI by restricting features to the
+exact intersection of CpGs available in both FHS and WHI (masking out 201 probes),
+then compares masked vs unmasked GrimAge via Pearson correlation, mean difference,
+and Cox proportional hazards models (unadjusted and age-adjusted, per 1-year and per 1-SD).
+
+INPUTS:
+- WHI metadata: config.DATA_DIR / "WHI_non_normalized.csv"
+- WHI 450K matrix: config.DATA_DIR / "WHI_full_imputed.parquet"
+- FHS 450K matrix schema: config.DATA_DIR / "FHS_methylation_merged.parquet"
+- GrimAge weights: config.PYAGING_DIR / "grimage.pt"
+- Saved WHI predictions: config.PREDICTIONS_DIR / "whi_biological_clocks.csv"
+
+OUTPUTS:
+- config.REVIEWS_DIR / "grimage_probe_audit" / "sensitivity_results.csv"
+  (Comparison of unmasked vs masked GrimAge hazard ratios, 95% CIs, and p-values)
+"""
+
 import sys
 from pathlib import Path
 _repo_root = Path(__file__).resolve().parent

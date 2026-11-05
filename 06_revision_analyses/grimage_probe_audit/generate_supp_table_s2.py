@@ -1,3 +1,24 @@
+"""Generate Supplementary Table S2 documenting probe availability across all clocks.
+
+================================================================================
+GRIMAGE PROBE AUDIT: GENERATE SUPPLEMENTARY TABLE S2
+================================================================================
+
+PURPOSE:
+Compiles probe availability and imputation accounting across all four evaluated
+epigenetic clocks (Horvath 2013, Hannum 2013, DNAmPhenoAge, DNAmGrimAge) for both
+the FHS (N = 3,493) and WHI (N = 196) cohorts into Supplementary Table S2.
+
+INPUTS:
+- Computed ground-truth probe availability counts from the probe audit pipeline.
+
+OUTPUTS:
+- config.REVIEWS_DIR / "grimage_probe_audit" / "Supplementary_Table_S2.csv"
+  (Table with columns: Clock, Cohort, n_required, n_present_complete,
+   n_partially_missing, max_pct_missing, median_pct_missing, n_absent,
+   n_values_imputed, pct_availability, non_cpg_inputs)
+"""
+
 import sys
 from pathlib import Path
 _repo_root = Path(__file__).resolve().parent

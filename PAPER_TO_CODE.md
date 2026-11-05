@@ -1,10 +1,10 @@
 # Where each result comes from
 
-`F&T` = `05_figures_and_tables/figures_and_tables.ipynb`. That notebook saves files under older working names, given in the last column so you can find them in `figures/`.
+`F&T` = `05_figures_and_tables/figures_and_tables.ipynb`. That notebook saves files under older legacy working names, given in the 'Saved as (legacy name)' column so you can locate them in `figures/`.
 
 ## Original submission
 
-| Manuscript item | Computed in | Drawn / formatted in | Saved as |
+| Manuscript item | Computed in | Drawn / formatted in | Saved as (legacy name) |
 |---|---|---|---|
 | **Table 1** Cohort characteristics | — | F&T, cell 9 | `Table_1_Cohort_Demographics.csv` |
 | **Table 2** C-index, all learners × feature sets × cohorts | `02_model_training/` (all four notebooks) | F&T, cell 10 | `Table_2_CIndex_Summary.csv` |

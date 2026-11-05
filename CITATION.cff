@@ -1,3 +1,13 @@
+# ==============================================================================
+# TODO [AUTHOR]: Author List Confirmation
+# ------------------------------------------------------------------------------
+# Joughyung Park was added as a co-author during manuscript revision.
+# Please confirm the final author order and affiliation details before release:
+#   - family-names: Park
+#     given-names: Joughyung
+#     affiliation: "Department of Biological Science, Chosun University, Gwangju, Republic of Korea"
+# Update both 'authors' and 'preferred-citation.authors' accordingly.
+# ==============================================================================
 cff-version: 1.2.0
 message: "If you use this code, please cite the article below."
 title: "Decoupling chronological-age signal from mortality signal across first- and second-generation epigenetic clocks: analysis code"

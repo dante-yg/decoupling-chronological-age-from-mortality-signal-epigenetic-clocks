@@ -1,8 +1,14 @@
 # Decoupling chronological-age signal from mortality signal across first- and second-generation epigenetic clocks
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python: 3.11 | 3.12](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue.svg)](requirements.txt)
+
+*Status: code for a manuscript under review at Archives of Gerontology and Geriatrics*
+
 This repository contains the analysis code for our study testing whether ten CpGs selected for age prediction (EpiClock) also carry information about mortality once chronological age is taken into account. Models were developed in the Framingham Heart Study (FHS) and validated in the Women's Health Initiative (WHI), and the results were compared with the Horvath, Hannum, PhenoAge and GrimAge clocks.
 
-[![Graphical abstract](docs/graphical_abstract.png)](docs/graphical_abstract.png)
+[![Workflow schematic: development of 10-CpG survival models in FHS, external validation in WHI, and age-decoupling survival analysis comparing predicted biological age against Horvath, Hannum, PhenoAge, and GrimAge clocks.](docs/graphical_abstract.png)](docs/graphical_abstract.png)
+*Workflow schematic: development of 10-CpG survival models in FHS, external validation in WHI, and age-decoupling survival analysis comparing predicted biological age against Horvath, Hannum, PhenoAge, and GrimAge clocks.*
 
 ## Usage
 
@@ -93,6 +99,9 @@ To verify that the code and dependencies execute properly without requiring appr
 If you use this code, please cite:
 
 Gogul MY, Vijayakumar KA, Cho GW. Decoupling chronological-age signal from mortality signal across first- and second-generation epigenetic clocks. *Archives of Gerontology and Geriatrics* (under review).
+
+> **TODO [AUTHOR] (Author List & Citation Confirmation):**
+> During peer-review revisions, Joughyung Park was added as a co-author. Please confirm the final author order, author affiliations, and formatted citation string above and in `CITATION.cff` (e.g., whether the order is Muthukumar Yugan Gogul, Karthikeyan A. Vijayakumar, Joughyung Park, Gwang-Won Cho).
 
 ## License
 

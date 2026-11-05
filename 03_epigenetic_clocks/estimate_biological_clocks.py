@@ -1,3 +1,31 @@
+"""Estimate biological epigenetic clocks using pyaging on 450K DNA methylation data.
+
+================================================================================
+ESTIMATE BIOLOGICAL CLOCKS (Horvath, Hannum, PhenoAge, GrimAge)
+================================================================================
+
+PURPOSE:
+Calculates four established biological epigenetic clocks using the pyaging library:
+  1. Horvath (2013) pan-tissue clock (353 CpGs)
+  2. Hannum et al. (2013) whole-blood clock (71 features: 69 CpGs + 2 non-CpG probes)
+  3. DNAm PhenoAge (Levine et al. 2018; 513 CpGs)
+  4. DNAm GrimAge (Lu et al. 2019; 1,032 features: 1,030 CpGs + chronological age + female sex)
+
+INPUTS:
+- FHS methylation matrix: config.DATA_DIR / "FHS_methylation_merged.parquet"
+  (columns: 'Share_ID', 'sex', 'age', 'event', 'time', and 450K CpG beta values)
+- WHI methylation matrix: config.DATA_DIR / "WHI_full_imputed.parquet"
+  (columns: 'Subject_ID', 'sex ', 'age', 'event ', 'time', and 450K CpG beta values)
+- Model weight files: downloaded automatically to pyaging_data/ from
+  https://pyaging.s3.amazonaws.com/clocks/weights0.1.0/
+
+OUTPUTS:
+- config.PREDICTIONS_DIR / "fhs_biological_clocks.csv"
+  (FHS cohort metadata + predicted epigenetic clock ages)
+- config.PREDICTIONS_DIR / "whi_biological_clocks.csv"
+  (WHI cohort metadata + predicted epigenetic clock ages)
+"""
+
 import sys
 from pathlib import Path
 _repo_root = Path(__file__).resolve().parent

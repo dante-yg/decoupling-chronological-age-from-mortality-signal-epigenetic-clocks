@@ -1,3 +1,28 @@
+"""Restore 109 recoverable GrimAge CpGs from raw FHS batch files and test sensitivity.
+
+================================================================================
+GRIMAGE PROBE AUDIT: RESTORE 109 CPGS & SENSITIVITY PIPELINE
+================================================================================
+
+PURPOSE:
+Restores the 109 GrimAge CpGs that were present on the 450K array but lost during
+original FHS batch processing. Merges recovered beta values with the FHS matrix
+(increasing available GrimAge CpGs from 829 to 938 out of 1,030), recalculates
+GrimAge predictions using pyaging, and runs age- and sex-adjusted Cox proportional
+hazards models across Train, Validation, and Test splits to evaluate sensitivity.
+
+INPUTS:
+- FHS metadata: config.DATA_DIR / "FHS_non_normalized.csv"
+- Missing probe causes: config.REVIEWS_DIR / "grimage_probe_audit" / "grimage_missing_probe_causes.csv"
+- Raw FHS batch files: Gen3, JHU, UMN raw matrices in config.RAW_DIR
+- Original clock predictions: config.PREDICTIONS_DIR / "fhs_biological_clocks.csv"
+
+OUTPUTS:
+- config.REVIEWS_DIR / "grimage_probe_audit" / "restored_grimage_cox_results.csv"
+  (Hazard ratios, 95% CIs, and p-values comparing original 829-CpG vs restored
+   938-CpG GrimAge per 1-year and per 1-SD across Train, Val, and Test splits)
+"""
+
 import sys
 from pathlib import Path
 _repo_root = Path(__file__).resolve().parent
