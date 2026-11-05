@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 #!/usr/bin/env python
 # coding: utf-8
 """
@@ -5,7 +16,7 @@ Reviewer 1, Comments 11, 12, 13:
 Clinical-marker ΔC, Age-residualized KM curves, and Epigenetic Age Acceleration
 Manuscript Revision: AGG-D-26-04256
 
-Deliverables produced in C:\\F\\base_3\\reviews\\c11_c12_c13\\:
+Deliverables produced in reviews/c11_c12_c13/:
 1. c11_biomarkers_delta_cindex.csv
 2. c11_time_dependent_auroc.csv
 3. c11_benchmark_reference_m5_m6_m7.csv
@@ -56,7 +67,7 @@ warnings.filterwarnings("ignore")
 # ==============================================================================
 # CONFIGURATION & DIRECTORIES
 # ==============================================================================
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 DATA_DIR = BASE_DIR / "data"
 PRED_DIR = BASE_DIR / "predictions"
 OUT_DIR  = BASE_DIR / "reviews" / "c11_c12_c13"
@@ -1420,8 +1431,8 @@ def write_summary_markdown(df_delta_learners, df_td_auroc, df_ref, df_km_stats, 
         "# Reviewer 1, Comments 11, 12, 13: Sensitivity Analysis Summary",
         "",
         "> **Manuscript Reference:** `AGG-D-26-04256`  ",
-        "> **Pipeline Script:** [`reviewer1_c11_c12_c13.py`](file:///C:/F/base_3/reviewer1_c11_c12_c13.py)  ",
-        "> **Execution Log:** [`logs/reviewer1_c11_c12_c13.log`](file:///C:/F/base_3/logs/reviewer1_c11_c12_c13.log)  ",
+        "> **Pipeline Script:** [`reviewer1_c11_c12_c13.py`](reviewer1_c11_c12_c13.py)  ",
+        "> **Execution Log:** [`logs/reviewer1_c11_c12_c13.log`](logs/reviewer1_c11_c12_c13.log)  ",
         "> **Reporting Policy:** Plain numbers only (estimates, 95% CIs, p-values, counts).  ",
         "",
         "---",
@@ -1557,11 +1568,11 @@ def write_summary_markdown(df_delta_learners, df_td_auroc, df_ref, df_km_stats, 
         "## 4. Figures Generated",
         "",
         "The following figures were generated at 600 DPI (PDF, TIFF, PNG) with number-at-risk tables:",
-        "1. **Main KM Figure (Test Split, 2 × 3 panel):** [`figures/reviewer1_km_age_residualized_test.pdf`](file:///C:/F/base_3/figures/reviewer1_km_age_residualized_test.pdf) (TIFF: [`reviewer1_km_age_residualized_test.tif`](file:///C:/F/base_3/figures/reviewer1_km_age_residualized_test.tif))",
+        "1. **Main KM Figure (Test Split, 2 × 3 panel):** [`figures/reviewer1_km_age_residualized_test.pdf`](figures/reviewer1_km_age_residualized_test.pdf) (TIFF: [`reviewer1_km_age_residualized_test.tif`](figures/reviewer1_km_age_residualized_test.tif))",
         "   - Rows: EpiClock risk score, GrimAge",
         "   - Columns: Original Tertiles, Age-Residualized Tertiles, Age-Stratified / Pooled Within-Band Tertiles",
-        "2. **Supplementary KM Figure (WHI Cohort, 2 × 3 panel):** [`figures/reviewer1_km_age_residualized_whi.pdf`](file:///C:/F/base_3/figures/reviewer1_km_age_residualized_whi.pdf) (TIFF: [`reviewer1_km_age_residualized_whi.tif`](file:///C:/F/base_3/figures/reviewer1_km_age_residualized_whi.tif))",
-        "3. **Cardiovascular Endpoints Cumulative Incidence (FHS Test, 1 × 3 panel):** [`figures/reviewer1_cardiovascular_residual_km.pdf`](file:///C:/F/base_3/figures/reviewer1_cardiovascular_residual_km.pdf) (TIFF: [`reviewer1_cardiovascular_residual_km.tif`](file:///C:/F/base_3/figures/reviewer1_cardiovascular_residual_km.tif))",
+        "2. **Supplementary KM Figure (WHI Cohort, 2 × 3 panel):** [`figures/reviewer1_km_age_residualized_whi.pdf`](figures/reviewer1_km_age_residualized_whi.pdf) (TIFF: [`reviewer1_km_age_residualized_whi.tif`](figures/reviewer1_km_age_residualized_whi.tif))",
+        "3. **Cardiovascular Endpoints Cumulative Incidence (FHS Test, 1 × 3 panel):** [`figures/reviewer1_cardiovascular_residual_km.pdf`](figures/reviewer1_cardiovascular_residual_km.pdf) (TIFF: [`reviewer1_cardiovascular_residual_km.tif`](figures/reviewer1_cardiovascular_residual_km.tif))",
         "",
         "---",
         "",

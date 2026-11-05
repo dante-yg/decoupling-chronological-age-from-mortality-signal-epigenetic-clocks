@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 import os
 import pandas as pd
 
@@ -111,7 +122,7 @@ data = [
 ]
 
 df = pd.DataFrame(data)
-out_path = r"C:\Yugan_Gogul\datasets\combined\data\grimage_audit\Supplementary_Table_S2.csv"
+out_path = str(config.REVIEWS_DIR / "grimage_probe_audit" / "Supplementary_Table_S2.csv")
 df.to_csv(out_path, index=False)
 print(f"Saved Supplementary_Table_S2.csv to {out_path}")
 print(df.to_string(index=False))

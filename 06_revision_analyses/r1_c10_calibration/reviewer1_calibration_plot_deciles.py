@@ -15,6 +15,18 @@ Specifications:
 - Colorblind-friendly colors (Okabe-Ito).
 - Outputs: 300-dpi TIFF and PNG figures; CSV of per-decile values.
 """
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
+
 
 import numpy as np
 import pandas as pd
@@ -23,7 +35,7 @@ import matplotlib.pyplot as plt
 from lifelines import KaplanMeierFitter
 
 # Paths
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 PRED_DIR = BASE_DIR / "predictions"
 FIG_DIR = BASE_DIR / "figures"
 FIG_DIR.mkdir(parents=True, exist_ok=True)

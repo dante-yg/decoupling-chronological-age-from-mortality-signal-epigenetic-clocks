@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 import os
 import sys
 import time
@@ -25,7 +36,7 @@ print("           FHS GRIMAGE 109-CPG RESTORATION & SENSITIVITY PIPELINE        
 print("================================================================================")
 
 # 1. Load FHS metadata and cohort splits
-FHS_META_CSV = r"C:\sharing\base_3\data\FHS_non_normalized.csv"
+FHS_META_CSV = str(config.DATA_DIR / "FHS_non_normalized.csv")
 fhs_df = pd.read_csv(FHS_META_CSV).rename(columns={"Share_ID": "patient_id"})
 print(f"Loaded FHS cohort: {fhs_df.shape} subjects, {fhs_df['event'].sum()} deaths.")
 
@@ -43,13 +54,13 @@ split_ids = {
 print(f"Split sizes: Train = {len(split_ids['Train'])}, Val = {len(split_ids['Val'])}, Test = {len(split_ids['Test'])}")
 
 # 2. Identify the 109 CpGs to restore
-causes_csv = r"C:\Yugan_Gogul\datasets\combined\data\grimage_audit\grimage_missing_probe_causes.csv"
+causes_csv = str(config.REVIEWS_DIR / "grimage_probe_audit" / "grimage_missing_probe_causes.csv")
 df_causes = pd.read_csv(causes_csv)
 cpgs_109 = sorted(list(set(df_causes[df_causes["in_dbgap_missing_table"] == True]["CpG"])))
 print(f"Restoring {len(cpgs_109)} GrimAge CpGs from raw dbGaP files...")
 
 # 3. Extract 109 CpGs from raw dbGaP files
-dbgap_dir = r"F:\dbGAP_datasets\FHS\Methylation\phg001091.v4.FHS_DNAMethylation.methylation-data-matrixfmt.c1.HMB-IRB-MDS\phg001091.v4.FHS_DNAMethylation.methylation-data-matrixfmt.c1"
+dbgap_dir = str(Path(os.environ.get("EPICLOCK_RAW_MATRIX_DIR", config.RAW_DIR / "FHS_DNAMethylation")))
 batches = [
     ("Gen 3", os.path.join(dbgap_dir, "gen3_methylation_c1.csv")),
     ("JHU",   os.path.join(dbgap_dir, "JHU_methylation_c1.csv")),
@@ -121,8 +132,8 @@ df_restored_combat["patient_id"] = fhs_df["patient_id"].values
 
 # 6. Load existing 829 GrimAge CpGs from FHS_methylation_merged.parquet
 print("\nLoading existing 829 GrimAge CpGs from FHS parquet...")
-FHS_PARQUET = r"C:\Yugan_Gogul\datasets\combined\data\FHS_methylation_merged.parquet"
-PYAGING_DATA = r"C:\sharing\base_3\pyaging_data"
+FHS_PARQUET = str(config.DATA_DIR / "FHS_methylation_merged.parquet" if (config.DATA_DIR / "FHS_methylation_merged.parquet").exists() else config.RAW_DIR / "FHS_methylation_merged.parquet")
+PYAGING_DATA = str(config.PYAGING_DIR)
 model = torch.load(os.path.join(PYAGING_DATA, "grimage.pt"), map_location="cpu", weights_only=False)
 grimage_cpgs = [f for f in model.features if f.startswith("cg")]
 
@@ -219,7 +230,7 @@ for s_name in ["Train", "Val", "Test"]:
     results.append(run_cox_split(s_name, "grimage_rest_z", "Restored (938 CpGs)", "per 1-SD"))
 
 res_df = pd.DataFrame(results)
-out_csv = r"C:\Yugan_Gogul\datasets\combined\data\grimage_audit\restored_grimage_cox_results.csv"
+out_csv = str(config.REVIEWS_DIR / "grimage_probe_audit" / "restored_grimage_cox_results.csv")
 res_df.to_csv(out_csv, index=False)
 print(f"\nSaved restoration Cox results to {out_csv}")
 

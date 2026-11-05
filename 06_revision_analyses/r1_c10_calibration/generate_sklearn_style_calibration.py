@@ -7,6 +7,18 @@ at the 14-year end point, matching the exact visual style of the reference image
 - "Mean Predicted Probability" vs "Fraction of Positives"
 - Clean grid lines and classic framing
 """
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
+
 
 import os
 import pandas as pd

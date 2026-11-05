@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 # CELL 0 (code)
 import pandas as pd
 
@@ -5,8 +16,8 @@ import pandas as pd
 import pyarrow.parquet as pq
 import pyarrow as pa
 
-path_whi = r"C:\Yugan_Gogul\datasets\combined\data\WHI_full_imputed.parquet"
-path_fhs = r"C:\Yugan_Gogul\datasets\combined\data\FHS_methylation_merged.parquet"
+path_whi = config.DATA_DIR / "WHI_full_imputed.parquet" if (config.DATA_DIR / "WHI_full_imputed.parquet").exists() else config.RAW_DIR / "WHI_full_imputed.parquet"
+path_fhs = config.DATA_DIR / "FHS_methylation_merged.parquet" if (config.DATA_DIR / "FHS_methylation_merged.parquet").exists() else config.RAW_DIR / "FHS_methylation_merged.parquet"
 
 # Big limits for schema/metadata
 KW = {
@@ -126,7 +137,7 @@ combined_df["Share_ID"] = combined_df["Share_ID"].astype(str)
 combined_df["batch"]    = combined_df["batch"].astype(str)
 
 # ---------- 2. Save to Parquet with PyArrow ----------
-out_dir = r"C:\Yugan_Gogul\datasets\combined\data"
+out_dir = config.DATA_DIR
 os.makedirs(out_dir, exist_ok=True)
 
 parquet_path = os.path.join(out_dir, "FHS_WHI_combined_float64.parquet")
@@ -150,7 +161,7 @@ print(parquet_path)
 import pandas as pd 
 import numpy as np
 
-df = pd.read_parquet(r"C:\Yugan_Gogul\datasets\combined\data\FHS_WHI_combined_float64.parquet")
+df = pd.read_parquet(config.DATA_DIR / "FHS_WHI_combined_float64.parquet")
 
 # CELL 8 (code)
 df
@@ -172,7 +183,7 @@ os.environ["MKL_NUM_THREADS"] = str(n_cores)
 print(f"Using up to {n_cores} CPU cores (BLAS threads).")
 
 # df is already loaded as:
-# df = pd.read_parquet(r"C:\Yugan_Gogul\datasets\combined\data\FHS_WHI_combined_float64.parquet")
+# df = pd.read_parquet(config.DATA_DIR / "FHS_WHI_combined_float64.parquet")
 
 # ============================================================
 # 1. Identify CpG columns (all of them)
@@ -252,7 +263,7 @@ plt.show()
 
 
 # CELL 10 (code)
-epi = pd.read_csv(r"C:\Yugan_Gogul\Project_5\redundatn\Epiclock\6k probes and coefficients.csv", low_memory=False)
+epi = pd.read_csv(config.DATA_DIR / "6k probes and coefficients.csv" if (config.DATA_DIR / "6k probes and coefficients.csv").exists() else config.RAW_DIR / "6k probes and coefficients.csv", low_memory=False)
 
 # CELL 11 (code)
 import numpy as np
@@ -272,7 +283,7 @@ print("Unique batches:", df["batch"].unique())
 # ==========================================================
 # 1. Load Epiclock coefficient table
 # ==========================================================
-epi_path = r"C:\Yugan_Gogul\Project_5\redundatn\Epiclock\6k probes and coefficients.csv"
+epi_path = config.DATA_DIR / "6k probes and coefficients.csv" if (config.DATA_DIR / "6k probes and coefficients.csv").exists() else config.RAW_DIR / "6k probes and coefficients.csv"
 epi = pd.read_csv(epi_path, low_memory=False)
 
 # ==========================================================
@@ -650,7 +661,7 @@ import os
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-out_dir = r"C:\Yugan_Gogul\datasets\combined\data"
+out_dir = config.DATA_DIR
 os.makedirs(out_dir, exist_ok=True)
 
 parquet_path = os.path.join(out_dir, "FHS_WHI_ComBat_batch_age_sex.parquet")
@@ -687,7 +698,7 @@ print("Unique batches:", df_epi["batch"].unique())
 # ==========================================================
 # 1. Load Epiclock coefficient table
 # ==========================================================
-epi_path = r"C:\Yugan_Gogul\Project_5\redundatn\Epiclock\6k probes and coefficients.csv"
+epi_path = config.DATA_DIR / "6k probes and coefficients.csv" if (config.DATA_DIR / "6k probes and coefficients.csv").exists() else config.RAW_DIR / "6k probes and coefficients.csv"
 epi = pd.read_csv(epi_path, low_memory=False)
 
 # ==========================================================

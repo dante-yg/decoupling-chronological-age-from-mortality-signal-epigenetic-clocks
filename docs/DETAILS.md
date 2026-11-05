@@ -4,18 +4,31 @@ This page gives the file paths, the run order with each step's inputs and output
 
 ## File paths
 
-The code uses absolute Windows paths. Replace these roots with your own locations:
+All project paths are centralized in [`config.py`](../config.py) at the repository root and resolved dynamically. All output directories (`predictions/`, `saved_models/`, `scalers/`, `figures/`, `logs/`, `reviews/`) are created automatically on import if they do not exist.
 
-| Path in the code | Meaning | Used by |
+Paths can be customized by setting environment variables (both Python scripts and the R deconvolution script read these):
+
+| Environment Variable | Default Location | Description |
 |---|---|---|
-| `C:\F\base_3` | **Project root.** Holds `data/`, `predictions/`, `saved_models/`, `scalers/`, `figures/`, `logs/` | Almost every step |
-| `C:\F\base_2\data` | Second copy of the same input files | `integrated_pipeline_cpg`, both stacking notebooks |
-| `C:\Yugan_Gogul\...` | Raw and full-matrix methylation files | `01_preprocessing/`, GrimAge probe audit |
-| `F:\dbgap\` | Full methylation matrices (`FHS_methylation_merged.parquet`, `WHI_full_imputed.parquet`) | `03_epigenetic_clocks/`, cell-composition analysis |
-| `D:\...`, `C:\Neural_network_survival_WHI\` | Extra dbGaP files used only in the revision (blood counts, Gen3 exam 2 clinical, WHI BA23 N = 1,818) | `06_revision_analyses/` |
-| `C:\sharing\base_3` | Same as the project root, on a second machine | GrimAge probe audit |
+| `EPICLOCK_ROOT` | Repository root | Base project root directory |
+| `EPICLOCK_DATA_DIR` | `$EPICLOCK_ROOT/data` | Processed input files (`FHS_non_normalized.csv`, etc.) |
+| `EPICLOCK_PREDICTIONS_DIR` | `$EPICLOCK_ROOT/predictions` | Saved predictions and intermediate results |
+| `EPICLOCK_SAVED_MODELS_DIR` | `$EPICLOCK_ROOT/saved_models` | Trained models (`.joblib`, PyTorch `.pt`) |
+| `EPICLOCK_SCALERS_DIR` | `$EPICLOCK_ROOT/scalers` | Fitted `StandardScaler` objects |
+| `EPICLOCK_FIGURES_DIR` | `$EPICLOCK_ROOT/figures` | Output figures (PDF, PNG, TIF) and summary tables |
+| `EPICLOCK_LOGS_DIR` | `$EPICLOCK_ROOT/logs` | Execution log files |
+| `EPICLOCK_REVIEWS_DIR` | `$EPICLOCK_ROOT/reviews` | Reviewer sensitivity analysis outputs |
+| `EPICLOCK_RAW_DIR` | `$EPICLOCK_DATA_DIR/raw` | Raw dbGaP controlled-access files (for `01_preprocessing/`) |
 
-Notebooks without an absolute path (e.g. `clocks_comparison`, `figures_and_tables`) read `predictions/...` relative to where they are started, so **start Jupyter from the project root.**
+### Historical path mappings
+For provenance and reference, previously hard-coded analysis paths from the author's machines have been mapped to config variables as follows:
+- `C:\F\base_3` and `C:\sharing\base_3` → `PROJECT_ROOT`
+- `C:\F\base_2\data` → `DATA_DIR` (duplicate copy mapped to standard data folder)
+- `C:\Yugan_Gogul\...` and `F:\dbgap\...` → `DATA_DIR` / `RAW_DIR`
+- `D:\...` and `C:\Neural_network_survival_WHI\...` → `RAW_DIR` / `DATA_DIR`
+- R scripts (`06_revision_analyses/.../deconvolution.R`) read the same environment variables via `Sys.getenv()`.
+
+Start Jupyter from the project root so notebooks automatically find `config.py`.
 
 ---
 

@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -38,13 +49,13 @@ SEED = 42
 np.random.seed(SEED)
 
 # Setup paths
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 DATA_DIR = BASE_DIR / "data"
 PRED_DIR = BASE_DIR / "predictions"
 LOG_DIR = BASE_DIR / "logs"
 DECONV_DIR = BASE_DIR / "reviews" / "cell_deconvolution_20261026"
 OUT_DIR = BASE_DIR / "reviews" / "cells_sensitivity"
-CBC_PATH = Path(r"D:\Data for multimodal study\FHS\Gen3_exam2 clinical.txt")
+CBC_PATH = Path(os.environ.get("EPICLOCK_GEN3_CLIN_PATH", config.RAW_DIR / "FHS" / "Gen3_exam2 clinical.txt"))
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -1391,8 +1402,8 @@ def write_markdown_summary(df_cindex, df_delta, df_hr, df_cells_cov, df_sens_del
         "# Reviewer 1, Comment 3: Sensitivity Analysis Adjusted for Estimated Blood-Cell Composition",
         "",
         "> **Manuscript Reference:** `AGG-D-26-04256`  ",
-        "> **Pipeline Script:** [`reviewer1_cells_sensitivity.py`](file:///C:/F/base_3/reviewer1_cells_sensitivity.py)  ",
-        "> **Execution Log:** [`logs/reviewer1_cells_sensitivity.log`](file:///C:/F/base_3/logs/reviewer1_cells_sensitivity.log)  ",
+        "> **Pipeline Script:** [`reviewer1_cells_sensitivity.py`](reviewer1_cells_sensitivity.py)  ",
+        "> **Execution Log:** [`logs/reviewer1_cells_sensitivity.log`](logs/reviewer1_cells_sensitivity.log)  ",
         "> **Reporting Policy:** Plain numbers only (estimates, 95% CIs, p-values, counts). No interpretive adjectives.",
         "",
         "---",
@@ -1561,7 +1572,7 @@ def write_markdown_summary(df_cindex, df_delta, df_hr, df_cells_cov, df_sens_del
         "",
         "## 6. Analysis 4: Measured Blood Counts Validation (FHS Gen3 Exam 2)",
         "",
-        f"- Table: `pht002889` ([`Gen3_exam2 clinical.txt`](file:///D:/Data%20for%20multimodal%20study/FHS/Gen3_exam2%20clinical.txt))",
+        f"- Table: `pht002889` ([`Gen3_exam2 clinical.txt`](FHS/Gen3_exam2%20clinical.txt))",
         f"- Concurrent DNAm and CBC sample size: $n = {n_cbc:,}$",
         f"- Deaths observed in this subset: $n = {n_cbc_deaths}$ (No mortality models executed on this subset)",
         "",
@@ -1644,12 +1655,12 @@ def write_markdown_summary(df_cindex, df_delta, df_hr, df_cells_cov, df_sens_del
         "",
         "### 8.1 10-CpG Working Files (`data/FHS_non_normalized.csv`, `data/WHI_non_normalized.csv`)",
         "- **Source Matrix:** Neither file was derived from the joint FHS+WHI neuroCombat file (`FHS_WHI_ComBat_batch_age_sex.parquet`) nor the Limma script (`Limma.R`).",
-        "- **Citation:** Directly verified in [`reviewer1_preprocessing_cells_summary.md`](file:///c:/F/base_3/reviewer1_preprocessing_cells_summary.md#L13-L25) and [`preprocess.py:L99-104`](file:///c:/F/base_3/decoupling-chronological-age-from-mortality-signal-epigenetic-clocks/src/stage1_preprocessing/preprocess.py#L99-L104).",
+        "- **Citation:** Directly verified in [`reviewer1_preprocessing_cells_summary.md`](reviewer1_preprocessing_cells_summary.md#L13-L25) and [`preprocess.py:L99-104`](decoupling-chronological-age-from-mortality-signal-epigenetic-clocks/src/stage1_preprocessing/preprocess.py#L99-L104).",
         "- **Details:** The files contain extracted, unnormalized beta values directly from dbGaP accession working copies (`phs000007.v33.p14` / `phs000007.v35.p1` for FHS, $n=3,493$; and `phs000200.v12.p3` for WHI, $n=196$). ComBat was not applied to `WHI_non_normalized.csv` on disk, and `FHS_non_normalized.csv` preserves the raw pre-ComBat beta extractions.",
         "",
         "### 8.2 Biological Clock Values (`predictions/fhs_biological_clocks.csv`, `predictions/whi_biological_clocks.csv`)",
         "- **Source Matrix:** Derived directly from the separate pre-ComBat parquet files: `FHS_PATH = r'F:\\dbgap\\FHS_methylation_merged.parquet'` and `WHI_PATH = r'F:\\dbgap\\WHI_full_imputed.parquet'`.",
-        "- **Citation:** [`code/estimate_biological_clocks.py`](file:///c:/F/base_3/code/estimate_biological_clocks.py) (lines 18–19, 47–83, and 89–125).",
+        "- **Citation:** [`code/estimate_biological_clocks.py`](code/estimate_biological_clocks.py) (lines 18–19, 47–83, and 89–125).",
         "- **Details:** Biological clocks (Horvath 2013, Hannum, DNAmPhenoAge, DNAmGrimAge) were predicted using the `pyaging` Python package applied to the respective cohort parquet files prior to any joint harmonization or batch correction.",
         "",
         "---",
@@ -1714,7 +1725,7 @@ def main():
     
     logger.info("==========================================================================")
     logger.info("PIPELINE COMPLETED SUCCESSFULLY!")
-    logger.info("All deliverables generated in: C:\\F\\base_3\\reviews\\cells_sensitivity\\")
+    logger.info(f"All deliverables generated in: {OUT_DIR}")
     logger.info("==========================================================================")
 
 if __name__ == "__main__":

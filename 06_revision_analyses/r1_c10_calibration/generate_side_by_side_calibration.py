@@ -11,6 +11,18 @@ Produces:
    - Panel (b): All Available Data (N = 1,818, CpG CoxNet model, Events = 195)
 3. CSV tables of deciles and calibration summary.
 """
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
+
 
 from pathlib import Path
 import numpy as np
@@ -20,14 +32,14 @@ from lifelines import KaplanMeierFitter
 import joblib
 
 # Paths
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 PRED_DIR = BASE_DIR / "predictions"
 FIG_DIR = BASE_DIR / "figures"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
 
 # 1. Load Data
 whi196 = pd.read_csv(BASE_DIR / "data/WHI_non_normalized.csv")
-p10_all = pd.read_csv(r"C:\Neural_network_survival_WHI\WHI_10_probes.csv")
+p10_all = pd.read_csv(config.DATA_DIR / "WHI_10_probes.csv" if (config.DATA_DIR / "WHI_10_probes.csv").exists() else config.RAW_DIR / "WHI_10_probes.csv")
 pred_final_196 = pd.read_csv(PRED_DIR / "coxnet_whi_V3_OPTUNA_SS.csv")
 
 # Ensure integer events

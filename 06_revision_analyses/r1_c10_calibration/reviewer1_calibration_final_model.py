@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -41,7 +52,7 @@ N_BOOT = 2000
 HORIZON = 10.0
 np.random.seed(SEED)
 
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 DATA_DIR = BASE_DIR / "data"
 PRED_DIR = BASE_DIR / "predictions"
 FIG_DIR  = BASE_DIR / "figures"
@@ -730,7 +741,8 @@ cat("R calibration plot saved to figures/r_calibration_crosscheck.png\n")
     with open(r_script_path, "w", encoding="utf-8") as f:
         f.write(r_script_content)
         
-    rscript_exe = r"C:\Program Files\R\R-4.5.1\bin\x64\Rscript.exe"
+    import shutil
+    rscript_exe = shutil.which("Rscript") or os.environ.get("RSCRIPT_PATH", r"C:\Program Files\R\R-4.5.1\bin\x64\Rscript.exe")
     res = subprocess.run([rscript_exe, str(r_script_path)], capture_output=True, text=True)
     logger.info("R script output:\n" + res.stdout)
     if res.stderr:

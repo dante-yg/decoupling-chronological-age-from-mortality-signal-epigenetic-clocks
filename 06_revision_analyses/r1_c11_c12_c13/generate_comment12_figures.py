@@ -5,6 +5,18 @@ Generate Publication-Ready Figures and Tables for Reviewer 1 Comment 12:
 3. Scatter plots showing Raw Correlation (r=0.90) vs Age-Residual Orthogonality (r=0.00)
 4. Comprehensive Master Summary Table
 """
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
+
 
 import os
 import pandas as pd
@@ -43,8 +55,8 @@ df_whi_cpg    = pd.read_csv("predictions/coxnet_whi_V3_OPTUNA_SS_CPG.csv")
 
 # Create output directories
 out_dirs = [
-    r"c:\F\base_3\reviews\comment12_age_stratification",
-    r"c:\F\base_3\figures"
+    str(config.REVIEWS_DIR / "comment12_age_stratification"),
+    str(config.FIGURES_DIR)
 ]
 for d in out_dirs:
     os.makedirs(d, exist_ok=True)

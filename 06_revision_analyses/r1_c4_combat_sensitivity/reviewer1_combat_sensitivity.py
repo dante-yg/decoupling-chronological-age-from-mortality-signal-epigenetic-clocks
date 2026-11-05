@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 #!/usr/bin/env python
 # coding: utf-8
 """
@@ -11,8 +22,8 @@ This script evaluates four versions of the 10 FHS CpGs (WHI uncorrected across a
   (T)  ComBat fitted on the TRAINING split only, age and sex protected, with learned parameters
        applied to val and test (neuroCombat.neuroCombatFromTraining)
 
-Outputs are written to: C:\\F\\base_3\\reviews\\combat_sensitivity\\
-Execution log: C:\\F\\base_3\\logs\\reviewer1_combat_sensitivity.log
+Outputs are written to: reviews/combat_sensitivity/
+Execution log: logs/reviewer1_combat_sensitivity.log
 Reporting policy: Plain numbers only.
 """
 
@@ -39,7 +50,7 @@ warnings.filterwarnings("ignore")
 # ==============================================================================
 # CONFIGURATION & DIRECTORIES
 # ==============================================================================
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 DATA_DIR = BASE_DIR / "data"
 PRED_DIR = BASE_DIR / "predictions"
 OUT_DIR  = BASE_DIR / "reviews" / "combat_sensitivity"
@@ -780,8 +791,8 @@ def write_markdown_summary(df_reprod, df_cindex, df_delta, df_hr, df_means, df_c
         "# Reviewer 1, Comment 4: ComBat Sensitivity Analysis",
         "",
         "> **Manuscript Reference:** `AGG-D-26-04256`  ",
-        "> **Pipeline Script:** [`reviewer1_combat_sensitivity.py`](file:///C:/F/base_3/reviewer1_combat_sensitivity.py)  ",
-        "> **Execution Log:** [`logs/reviewer1_combat_sensitivity.log`](file:///C:/F/base_3/logs/reviewer1_combat_sensitivity.log)  ",
+        "> **Pipeline Script:** [`reviewer1_combat_sensitivity.py`](reviewer1_combat_sensitivity.py)  ",
+        "> **Execution Log:** [`logs/reviewer1_combat_sensitivity.log`](logs/reviewer1_combat_sensitivity.log)  ",
         "> **Reporting Policy:** Plain numbers only (estimates, 95% CIs, p-values, counts). No adjectives or subjective conclusions.  ",
         "",
         "---",

@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 import os
 import sys
 import gzip
@@ -14,11 +25,11 @@ importlib.metadata.version = lambda p: np.__version__ if p == 'numpy' else _orig
 importlib_metadata.version = importlib.metadata.version
 
 # Paths
-PYAGING_DIR = r"C:\sharing\base_3\pyaging_data"
-FHS_PARQUET = r"C:\Yugan_Gogul\datasets\combined\data\FHS_methylation_merged.parquet"
-WHI_PARQUET = r"C:\Yugan_Gogul\datasets\combined\data\WHI_full_imputed.parquet"
-MANIFEST_PATH = r"C:\sharing\base_3\scratch\annotations\HM450.hg19.manifest.tsv.gz"
-FHS_RAW_DIR = r"D:\FHS_processed"
+PYAGING_DIR = str(config.PYAGING_DIR)
+FHS_PARQUET = str(config.DATA_DIR / "FHS_methylation_merged.parquet" if (config.DATA_DIR / "FHS_methylation_merged.parquet").exists() else config.RAW_DIR / "FHS_methylation_merged.parquet")
+WHI_PARQUET = str(config.DATA_DIR / "WHI_full_imputed.parquet" if (config.DATA_DIR / "WHI_full_imputed.parquet").exists() else config.RAW_DIR / "WHI_full_imputed.parquet")
+MANIFEST_PATH = Path(os.environ.get("EPICLOCK_MANIFEST_PATH", config.PROJECT_ROOT / "scratch" / "annotations" / "HM450.hg19.manifest.tsv.gz"))
+FHS_RAW_DIR = str(config.RAW_DIR / "FHS_processed" if (config.RAW_DIR / "FHS_processed").exists() else config.RAW_DIR)
 
 # 1. Load GrimAge model
 model = torch.load(os.path.join(PYAGING_DIR, "grimage.pt"), map_location="cpu", weights_only=False)

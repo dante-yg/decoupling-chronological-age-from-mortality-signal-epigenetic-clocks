@@ -27,15 +27,18 @@ cat("===========================================================================
 # ------------------------------------------------------------------------------
 # Define directories and file paths
 # ------------------------------------------------------------------------------
-out_dir <- "D:/cell_deconvolution_20261026"
+project_root <- Sys.getenv("EPICLOCK_ROOT", unset = ".")
+data_dir     <- Sys.getenv("EPICLOCK_DATA_DIR", unset = file.path(project_root, "data"))
+raw_dir      <- Sys.getenv("EPICLOCK_RAW_DIR", unset = file.path(data_dir, "raw"))
+out_dir      <- Sys.getenv("EPICLOCK_CELL_DECONV_DIR", unset = file.path(project_root, "reviews", "cell_deconvolution"))
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 path_fhs_clean    <- file.path(out_dir, "FHS_reference_cpgs.parquet")
 path_whi_clean    <- file.path(out_dir, "WHI_reference_cpgs.parquet")
 path_combat_clean <- file.path(out_dir, "ComBat_reference_cpgs.parquet")
 
-path_cbc <- "D:/dbGAP_datasets/FHS/Phenotype/phs000007.v33.pht002889.v5.p14.c1.l_fhslab_2011_m_0656s.HMB-IRB-MDS.txt/phs000007.v33.pht002889.v5.p14.c1.l_fhslab_2011_m_0656s.HMB-IRB-MDS.txt"
-path_fhs_disease <- "C:/Yugan_Gogul/datasets/combined/data/Disease_data_arranaged.xlsx"
+path_cbc <- Sys.getenv("EPICLOCK_CBC_PATH", unset = file.path(raw_dir, "FHS", "Phenotype", "phs000007.v33.pht002889.v5.p14.c1.l_fhslab_2011_m_0656s.HMB-IRB-MDS.txt", "phs000007.v33.pht002889.v5.p14.c1.l_fhslab_2011_m_0656s.HMB-IRB-MDS.txt"))
+path_fhs_disease <- file.path(data_dir, "Disease_data_arranaged.xlsx")
 
 # ------------------------------------------------------------------------------
 # 1. Load Reference Matrices

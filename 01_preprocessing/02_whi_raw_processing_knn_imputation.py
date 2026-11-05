@@ -1,8 +1,19 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 # CELL 0 (code)
 import pandas as pd
 
 # CELL 1 (code)
-WHI_raw = pd.read_csv(r"C:/Yugan_Gogul/WHI/raw/BA23Methylation_dbGAP_0517-cg1.csv", low_memory=False)
+WHI_raw = pd.read_csv(config.RAW_DIR / "WHI" / "raw" / "BA23Methylation_dbGAP_0517-cg1.csv", low_memory=False)
 
 # CELL 2 (code)
 WHI_raw = WHI_raw.T
@@ -14,7 +25,7 @@ WHI_raw = WHI_raw.drop(WHI_raw.index[1])
 WHI_raw
 
 # CELL 5 (code)
-ID = pd.read_csv(r"C:\Yugan_Gogul\WHI\WHI_metadata\processing\WHI_metadata.csv", low_memory = False)
+ID = pd.read_csv(config.RAW_DIR / "WHI" / "WHI_metadata" / "processing" / "WHI_metadata.csv", low_memory = False)
 
 # CELL 6 (code)
 WHI_raw
@@ -95,11 +106,11 @@ print("merged shape:", merged.shape)
 print(merged.columns[:15])
 
 # Save (CSV or Parquet)
-merged.to_csv(r"C:\Yugan_Gogul\WHI\WHI_metadata\processing\WHI_with_metadata_and_CpGs.csv",
+merged.to_csv(config.RAW_DIR / "WHI" / "WHI_metadata" / "processing" / "WHI_with_metadata_and_CpGs.csv",
               index=False)
 
 # Recommended for big matrix:
-# merged.to_parquet(r"C:\Yugan_Gogul\WHI\WHI_metadata\processing\WHI_with_metadata_and_CpGs.parquet")
+# merged.to_parquet(config.RAW_DIR / "WHI" / "WHI_metadata" / "processing" / "WHI_with_metadata_and_CpGs.parquet")
 
 
 # CELL 18 (code)
@@ -120,7 +131,7 @@ print("Number of CpGs with missing values:", num_cpg_with_missing)
 
 # CELL 20 (code)
 import pandas as pd 
-merged = pd.read_csv(r"C:\Yugan_Gogul\WHI\WHI_metadata\processing\WHI_with_metadata_and_CpGs.csv", low_memory=False)
+merged = pd.read_csv(config.RAW_DIR / "WHI" / "WHI_metadata" / "processing" / "WHI_with_metadata_and_CpGs.csv", low_memory=False)
 
 # CELL 21 (code)
 
@@ -177,13 +188,13 @@ merged_imputed = pd.concat([meta, cpg_imputed], axis=1)
 
 print("Final imputed shape:", merged_imputed.shape)
 
-merged_imputed.to_parquet(r"C:\Yugan_Gogul\WHI\WHI_imputed_knn5.parquet")
+merged_imputed.to_parquet(config.RAW_DIR / "WHI" / "WHI_imputed_knn5.parquet")
 
 # CELL 25 (code)
 import pandas as pd
 
 WHI = pd.read_parquet(
-    r"C:\Yugan_Gogul\WHI\WHI_imputed_knn5.parquet",
+    str(config.RAW_DIR / "WHI" / "WHI_imputed_knn5.parquet"),
     engine="fastparquet"
 )
 
@@ -195,7 +206,7 @@ WHI = WHI.drop(columns=["Unnamed: 0"], errors="ignore")
 
 # CELL 27 (code)
 WHI.to_csv(
-    r"C:\Yugan_Gogul\WHI\WHI_imputed_knn5.csv",
+    str(config.RAW_DIR / "WHI" / "WHI_imputed_knn5.csv"),
     index=False
 )
 
@@ -204,7 +215,7 @@ import pandas as pd
 
 
 # CELL 29 (code)
-WHI = pd.read_csv(r"C:/Yugan_Gogul/datasets/WHI/processed_WHI/WHI_imputed_knn5.csv", low_memory = False)
+WHI = pd.read_csv(config.RAW_DIR / "WHI" / "processed_WHI" / "WHI_imputed_knn5.csv", low_memory = False)
 
 # CELL 30 (code)
 WHI
@@ -220,7 +231,7 @@ import pyarrow.parquet as pq
 # -----------------------------------------------------------
 # 1. Create output folder if it doesn't exist
 # -----------------------------------------------------------
-output_dir = r"C:\Yugan_Gogul\datasets\WHI\processed_parquet"
+output_dir = config.RAW_DIR / "WHI" / "processed_parquet"
 os.makedirs(output_dir, exist_ok=True)
 
 output_path = os.path.join(output_dir, "WHI_full_imputed.parquet")
@@ -261,7 +272,7 @@ print("Example missing CpG column names:", missing_cpg_list[:10])   # print firs
 
 
 # CELL 33 (code)
-epi = pd.read_csv(r"C:\Yugan_Gogul\Project_5\redundatn\Epiclock\6k probes and coefficients.csv", low_memory=False)
+epi = pd.read_csv(config.DATA_DIR / "6k probes and coefficients.csv" if (config.DATA_DIR / "6k probes and coefficients.csv").exists() else config.RAW_DIR / "6k probes and coefficients.csv", low_memory=False)
 
 # CELL 34 (code)
 epi

@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 #!/usr/bin/env python
 # coding: utf-8
 """
@@ -5,7 +16,7 @@ Reviewer 1 Comment 5 + Reviewer 3 Table 3 / 3.5 & Reviewer 3, 3.2:
 Rebuild Table 3 (Hazard Ratios per 1-SD FHS-Train SD) and Per-Learner TD-AUROC
 Manuscript Revision: AGG-D-26-04256
 
-Deliverables produced in C:\\F\\base_3\\reviews\\table3\\:
+Deliverables produced in reviews/table3/:
 1. table3_main.csv: Main table with Test and WHI x (U, AS), n and deaths header, p-values, bold flags.
 2. table3_supplement.csv: All splits (Train, Val, Test, WHI) x all 4 models (U, A, S, AS).
 3. table3.docx: Publication-formatted Word document with Main and Supplementary Table 3.
@@ -51,7 +62,7 @@ warnings.filterwarnings("ignore")
 # ==============================================================================
 # CONFIGURATION & DIRECTORIES
 # ==============================================================================
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 DATA_DIR = BASE_DIR / "data"
 PRED_DIR = BASE_DIR / "predictions"
 OUT_DIR  = BASE_DIR / "reviews" / "table3"
@@ -1058,8 +1069,8 @@ def write_summary_markdown(df_sds, df_whi_diag, df_p_check, df_main, df_suppleme
         "# Reviewer 1 (Comment 5) & Reviewer 3 (Table 3 / 3.5 & 3.2): Table 3 Rebuild & TD-AUROC Summary",
         "",
         "> **Manuscript Reference:** `AGG-D-26-04256`  ",
-        "> **Pipeline Script:** [`reviewer_table3_rebuild.py`](file:///C:/F/base_3/reviewer_table3_rebuild.py)  ",
-        "> **Execution Log:** [`logs/reviewer_table3_rebuild.log`](file:///C:/F/base_3/logs/reviewer_table3_rebuild.log)  ",
+        "> **Pipeline Script:** [`reviewer_table3_rebuild.py`](reviewer_table3_rebuild.py)  ",
+        "> **Execution Log:** [`logs/reviewer_table3_rebuild.log`](logs/reviewer_table3_rebuild.log)  ",
         "> **Reporting Policy:** Plain numbers only (estimates, 95% CIs, p-values, counts).  ",
         "",
         "---",
@@ -1143,9 +1154,9 @@ def write_summary_markdown(df_sds, df_whi_diag, df_p_check, df_main, df_suppleme
         "## 4. Part 4: Figure 2 (Four-Panel Comparative Forest Plot)",
         "",
         "Generated at 600 DPI (PDF, TIFF, PNG):",
-        "- [`figures/reviewer_figure2_forest_adjusted_hr.pdf`](file:///C:/F/base_3/figures/reviewer_figure2_forest_adjusted_hr.pdf)",
-        "- [`figures/reviewer_figure2_forest_adjusted_hr.tif`](file:///C:/F/base_3/figures/reviewer_figure2_forest_adjusted_hr.tif)",
-        "- [`figures/reviewer_figure2_forest_adjusted_hr.png`](file:///C:/F/base_3/figures/reviewer_figure2_forest_adjusted_hr.png)",
+        "- [`figures/reviewer_figure2_forest_adjusted_hr.pdf`](figures/reviewer_figure2_forest_adjusted_hr.pdf)",
+        "- [`figures/reviewer_figure2_forest_adjusted_hr.tif`](figures/reviewer_figure2_forest_adjusted_hr.tif)",
+        "- [`figures/reviewer_figure2_forest_adjusted_hr.png`](figures/reviewer_figure2_forest_adjusted_hr.png)",
         "",
         "Features of Figure 2:",
         "1. **Four Panels:** Panel A (FHS Train [OOF], $n=2,095$, 380 deaths), Panel B (FHS Val, $n=699$, 127 deaths), Panel C (FHS Test, $n=699$, 127 deaths), Panel D (WHI External Cohort, $n=196$, 56 deaths).",
@@ -1174,9 +1185,9 @@ def write_summary_markdown(df_sds, df_whi_diag, df_p_check, df_main, df_suppleme
         "",
         "### 5.2 CoxNet Pointwise Bootstrap Bands Figure",
         "Generated at 600 DPI (PDF, TIFF, PNG):",
-        "- [`figures/reviewer3_coxnet_pointwise_td_auroc.pdf`](file:///C:/F/base_3/figures/reviewer3_coxnet_pointwise_td_auroc.pdf)",
-        "- [`figures/reviewer3_coxnet_pointwise_td_auroc.tif`](file:///C:/F/base_3/figures/reviewer3_coxnet_pointwise_td_auroc.tif)",
-        "- [`figures/reviewer3_coxnet_pointwise_td_auroc.png`](file:///C:/F/base_3/figures/reviewer3_coxnet_pointwise_td_auroc.png)",
+        "- [`figures/reviewer3_coxnet_pointwise_td_auroc.pdf`](figures/reviewer3_coxnet_pointwise_td_auroc.pdf)",
+        "- [`figures/reviewer3_coxnet_pointwise_td_auroc.tif`](figures/reviewer3_coxnet_pointwise_td_auroc.tif)",
+        "- [`figures/reviewer3_coxnet_pointwise_td_auroc.png`](figures/reviewer3_coxnet_pointwise_td_auroc.png)",
         "",
         "---",
         "",

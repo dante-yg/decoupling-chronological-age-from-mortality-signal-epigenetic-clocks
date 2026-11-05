@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 import os
 import sys
 import urllib.request
@@ -15,8 +26,8 @@ DATA_DIR = "pyaging_data"
 os.makedirs(PRED_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
-FHS_PATH = r"F:\dbgap\FHS_methylation_merged.parquet"
-WHI_PATH = r"F:\dbgap\WHI_full_imputed.parquet"
+FHS_PATH = config.DATA_DIR / "FHS_methylation_merged.parquet" if (config.DATA_DIR / "FHS_methylation_merged.parquet").exists() else config.RAW_DIR / "FHS_methylation_merged.parquet"
+WHI_PATH = config.DATA_DIR / "WHI_full_imputed.parquet" if (config.DATA_DIR / "WHI_full_imputed.parquet").exists() else config.RAW_DIR / "WHI_full_imputed.parquet"
 
 CLOCKS = ['horvath2013', 'hannum', 'dnamphenoage', 'grimage']
 

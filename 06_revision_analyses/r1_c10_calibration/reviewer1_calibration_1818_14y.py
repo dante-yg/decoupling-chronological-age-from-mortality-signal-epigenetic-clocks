@@ -2,6 +2,18 @@
 Calibration Plot for Full BAA23 Methylation Cohort (N=1,818) at 14-Year Horizon
 Evaluates the CpG-only CoxNet model (10 CpGs) on all 1,818 BAA23 participants.
 """
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
+
 
 from pathlib import Path
 import numpy as np
@@ -10,7 +22,7 @@ import matplotlib.pyplot as plt
 from lifelines import KaplanMeierFitter
 import joblib
 
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 FIG_DIR = BASE_DIR / "figures"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -18,7 +30,7 @@ FIG_DIR.mkdir(parents=True, exist_ok=True)
 scaler = joblib.load(BASE_DIR / "scalers/coxnet_scaler_V3_OPTUNA_SS_CPG.joblib")
 cpg_model = joblib.load(BASE_DIR / "saved_models/coxnet_V3_OPTUNA_SS_CPG/coxnet_V3_OPTUNA_SS_CPG.model")
 fhs_train = pd.read_csv(BASE_DIR / "predictions/coxnet_train_V3_OPTUNA_SS_CPG.csv")
-p10 = pd.read_csv(r"C:\Neural_network_survival_WHI\WHI_10_probes.csv")
+p10 = pd.read_csv(config.DATA_DIR / "WHI_10_probes.csv" if (config.DATA_DIR / "WHI_10_probes.csv").exists() else config.RAW_DIR / "WHI_10_probes.csv")
 
 features = ['cg04604946', 'cg06639320', 'cg07955995', 'cg10246448', 'cg10501210',
             'cg11617964', 'cg16867657', 'cg20591472', 'cg24724428', 'cg25590826']

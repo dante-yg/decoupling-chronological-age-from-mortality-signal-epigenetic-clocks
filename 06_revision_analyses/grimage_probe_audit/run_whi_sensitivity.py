@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 import os
 import sys
 import torch
@@ -18,12 +29,12 @@ from scipy.stats import pearsonr
 from lifelines import CoxPHFitter
 
 # File paths
-WHI_SUBSET_CSV = r"C:\sharing\base_3\data\WHI_non_normalized.csv"
-WHI_PARQUET = r"C:\Yugan_Gogul\datasets\combined\data\WHI_full_imputed.parquet"
-FHS_PARQUET = r"C:\Yugan_Gogul\datasets\combined\data\FHS_methylation_merged.parquet"
-PYAGING_DATA = r"C:\sharing\base_3\pyaging_data"
-PRED_CSV = r"C:\sharing\base_3\predictions\whi_biological_clocks.csv"
-OUTPUT_DIR = r"C:\Yugan_Gogul\datasets\combined\data\grimage_audit"
+WHI_SUBSET_CSV = str(config.DATA_DIR / "WHI_non_normalized.csv")
+WHI_PARQUET = str(config.DATA_DIR / "WHI_full_imputed.parquet" if (config.DATA_DIR / "WHI_full_imputed.parquet").exists() else config.RAW_DIR / "WHI_full_imputed.parquet")
+FHS_PARQUET = str(config.DATA_DIR / "FHS_methylation_merged.parquet" if (config.DATA_DIR / "FHS_methylation_merged.parquet").exists() else config.RAW_DIR / "FHS_methylation_merged.parquet")
+PYAGING_DATA = str(config.PYAGING_DIR)
+PRED_CSV = str(config.PREDICTIONS_DIR / "whi_biological_clocks.csv")
+OUTPUT_DIR = str(config.REVIEWS_DIR / "grimage_probe_audit")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

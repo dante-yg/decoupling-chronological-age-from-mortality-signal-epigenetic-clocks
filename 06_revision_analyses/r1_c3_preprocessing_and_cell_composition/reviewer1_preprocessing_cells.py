@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -34,7 +45,7 @@ SEED = 42
 np.random.seed(SEED)
 
 # Setup directories
-BASE_DIR = Path(r"C:\F\base_3")
+BASE_DIR = config.PROJECT_ROOT
 DATA_DIR = BASE_DIR / "data"
 PRED_DIR = BASE_DIR / "predictions"
 LOG_DIR = BASE_DIR / "logs"
@@ -210,7 +221,7 @@ def run_part_c(fhs_df, whi_df):
 
     # 2. Audit measured clinical leukocyte counts from disk
     # FHS Gen3 Exam 2: D:\Data for multimodal study\FHS\Gen3_exam2 clinical.txt (pht002889.v5.p14.c1)
-    gen3_path = Path(r"D:\Data for multimodal study\FHS\Gen3_exam2 clinical.txt")
+    gen3_path = Path(os.environ.get("EPICLOCK_GEN3_CLIN_PATH", config.RAW_DIR / "FHS" / "Gen3_exam2 clinical.txt"))
     if gen3_path.exists():
         gen3_df = pd.read_csv(gen3_path, sep="\t", skiprows=10, low_memory=False)
         fhs_merged = pd.merge(
@@ -233,7 +244,7 @@ def run_part_c(fhs_df, whi_df):
         fhs_merged.to_csv(BASE_DIR / "cell_proportions_fhs.csv", index=False)
 
     # WHI CBC: D:\Data for multimodal study\WHI\Process\phs000200.v12.pht000986.v6.p3.c1.cbc_rel1.HMB-IRB.txt
-    whi_cbc_path = Path(r"D:\Data for multimodal study\WHI\Process\phs000200.v12.pht000986.v6.p3.c1.cbc_rel1.HMB-IRB.txt")
+    whi_cbc_path = Path(os.environ.get("EPICLOCK_WHI_CBC_PATH", config.RAW_DIR / "WHI" / "cbc_rel1.HMB-IRB-MDS.txt"))
     if whi_cbc_path.exists():
         whi_cbc_df = pd.read_csv(whi_cbc_path, sep="\t", low_memory=False)
         whi_baseline = whi_cbc_df[whi_cbc_df["CBCVY"] == 0].drop_duplicates(subset=["SUBJID"])

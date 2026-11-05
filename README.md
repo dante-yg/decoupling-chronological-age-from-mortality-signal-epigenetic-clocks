@@ -44,7 +44,7 @@ The FHS (phs000007) and WHI (phs000200) data are controlled-access and are not i
    ```bash
    pip install -r requirements.txt
    ```
-3. Set the file paths. The scripts use absolute paths from our analysis machine, such as `C:\F\base_3`. Replace these with your own folders. The main folder should contain `data/`, `predictions/`, `saved_models/`, `scalers/`, `figures/` and `logs/`.
+3. Configure file paths. Paths are centralized in `config.py` and default to standard directories relative to the repository root (`data/`, `predictions/`, `saved_models/`, `scalers/`, `figures/`, `logs/`). You can override paths via environment variables (e.g. `export EPICLOCK_ROOT=/path/to/project`, `export EPICLOCK_DATA_DIR=/path/to/data`, `export EPICLOCK_RAW_DIR=/path/to/raw_dbgap`). Output directories are created automatically.
 4. Run the folders in order, starting Jupyter from the main folder:
    ```bash
    jupyter notebook

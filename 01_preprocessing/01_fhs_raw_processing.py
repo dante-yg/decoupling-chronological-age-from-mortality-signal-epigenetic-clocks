@@ -1,14 +1,25 @@
+import sys
+from pathlib import Path
+_repo_root = Path(__file__).resolve().parent
+while _repo_root != _repo_root.parent:
+    if (_repo_root / "config.py").exists():
+        if str(_repo_root) not in sys.path:
+            sys.path.insert(0, str(_repo_root))
+        break
+    _repo_root = _repo_root.parent
+import config
+
 # CELL 0 (code)
 import pandas as pd
 
 # CELL 1 (code)
-G3 = pd.read_csv(r"C:/Yugan_Gogul/datasets/FHS/raw/Gen3_common_probes.csv", low_memory = False)
+G3 = pd.read_csv(config.RAW_DIR / "FHS" / "raw" / "Gen3_common_probes.csv", low_memory = False)
 
 # CELL 2 (code)
-JHU = pd.read_csv(r"C:/Yugan_Gogul/datasets/FHS/raw/JHU_common_probes.csv", low_memory = False)
+JHU = pd.read_csv(config.RAW_DIR / "FHS" / "raw" / "JHU_common_probes.csv", low_memory = False)
 
 # CELL 3 (code)
-UMN = pd.read_csv(r"C:/Yugan_Gogul/datasets/FHS/raw/UMN_common_probes.csv", low_memory = False)
+UMN = pd.read_csv(config.RAW_DIR / "FHS" / "raw" / "UMN_common_probes.csv", low_memory = False)
 
 # CELL 4 (code)
 G3
@@ -46,10 +57,10 @@ JHU = JHU.reset_index().rename(columns={"index": "Probe"})
 JHU
 
 # CELL 14 (code)
-JHU.to_csv(r"C:/Yugan_Gogul/datasets/FHS/raw/JHU_clean.csv", index=False)
+JHU.to_csv(config.RAW_DIR / "FHS" / "raw" / "JHU_clean.csv", index=False)
 
 # CELL 15 (code)
-JHU = pd.read_csv(r"C:\Yugan_Gogul\datasets\FHS\raw\JHU_clean.csv",low_memory = False)
+JHU = pd.read_csv(config.RAW_DIR / "FHS" / "raw" / "JHU_clean.csv", low_memory = False)
 
 # CELL 16 (code)
 G3
@@ -59,13 +70,13 @@ JHU
 
 # CELL 18 (code)
 import pandas as pd
-G3 = pd.read_csv(r"C:/Yugan_Gogul/datasets/FHS/raw/G3_clean.csv", low_memory = False)
+G3 = pd.read_csv(config.RAW_DIR / "FHS" / "raw" / "G3_clean.csv", low_memory = False)
 
 # CELL 19 (code)
-JHU = pd.read_csv(r"C:/Yugan_Gogul/datasets/FHS/raw/JHU_clean.csv", low_memory = False)
+JHU = pd.read_csv(config.RAW_DIR / "FHS" / "raw" / "JHU_clean.csv", low_memory = False)
 
 # CELL 20 (code)
-UMN = pd.read_csv(r"C:/Yugan_Gogul/datasets/FHS/raw/UMN_clean.csv", low_memory = False)
+UMN = pd.read_csv(config.RAW_DIR / "FHS" / "raw" / "UMN_clean.csv", low_memory = False)
 
 # CELL 21 (code)
 G3
@@ -77,7 +88,7 @@ JHU
 UMN
 
 # CELL 24 (code)
-meta_data = pd.read_csv(r"C:\Yugan_Gogul\datasets\FHS\FHS_dependencies\meta_data.csv", low_memory = False)
+meta_data = pd.read_csv(config.RAW_DIR / "FHS" / "FHS_dependencies" / "meta_data.csv", low_memory = False)
 
 # CELL 25 (code)
 meta_data
@@ -232,7 +243,7 @@ import os
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-output_dir = r"C:\Yugan_Gogul\datasets\FHS\processed"
+output_dir = config.RAW_DIR / "FHS" / "processed"
 os.makedirs(output_dir, exist_ok=True)
 
 output_path = os.path.join(output_dir, "FHS_methylation_merged.parquet")
@@ -251,7 +262,7 @@ print("Saved Parquet:", output_path)
 
 
 # CELL 29 (code)
-epi = pd.read_csv(r"C:\Yugan_Gogul\Project_5\redundatn\Epiclock\6k probes and coefficients.csv", low_memory=False)
+epi = pd.read_csv(config.DATA_DIR / "6k probes and coefficients.csv" if (config.DATA_DIR / "6k probes and coefficients.csv").exists() else config.RAW_DIR / "6k probes and coefficients.csv", low_memory=False)
 
 # CELL 30 (code)
 import numpy as np
