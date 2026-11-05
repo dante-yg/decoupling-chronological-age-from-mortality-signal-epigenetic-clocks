@@ -23,11 +23,26 @@ To find the code behind a particular table or figure, see [PAPER_TO_CODE.md](PAP
 
 ## Requirements
 
-- Python 3.11 with numpy, pandas, scikit-learn, scikit-survival, lifelines, optuna, PyTorch, torchtuples, pycox, pyaging, anndata, pyarrow, neuroCombat, matplotlib and seaborn
-- Jupyter, for the notebooks
-- R, only for the cell-composition and calibration cross-check scripts in `06_revision_analyses`
+### Python Environment
+- Python 3.11 or 3.12 with standard scientific libraries: `numpy`, `pandas`, `scipy`, `scikit-learn`, `scikit-survival`, `lifelines`, `optuna`, `torch` (PyTorch), `torchtuples`, `pycox`, `pyaging`, `anndata`, `pyarrow`, `neuroCombat`, `matplotlib`, and `seaborn`.
+- Jupyter, for running the analytical notebooks.
 
-Exact versions are pinned in [requirements.txt](requirements.txt).
+Exact package versions are listed in [requirements.txt](requirements.txt).
+
+> **TODO [AUTHOR] (Environment Consistency):**
+> Please verify the exact Python and package version combination used for the published manuscript results. The repository records two different environments:
+> - `environment_used_for_clock_audit.txt`: Python 3.11.4 (`torch==2.5.1+cpu`, `scikit-learn==1.5.2`, `scipy==1.14.1`, `anndata==0.11.1`, `pyarrow==18.1.0`).
+> - `requirements.txt`: Python 3.12.9 (`torch==2.10.0`, `scikit-learn==1.6.1`, `scipy==1.15.2`, `anndata==0.12.17`, `pyarrow==24.0.0`).
+>
+> If subtle numerical differences occur in optimization (e.g., Optuna or PyTorch), confirm and align the pinned versions with those from the final manuscript production run.
+
+### R Environment
+R is required only for blood leukocyte deconvolution (`06_revision_analyses/r1_c3_preprocessing_and_cell_composition/deconvolution.R`):
+- CRAN packages: `arrow`, `data.table`, `MASS`, `quadprog`
+- Bioconductor packages: `EpiDISH`, `FlowSorted.Blood.450k`, `minfi`
+
+> **TODO [AUTHOR] (R Package Versions):**
+> Exact R version and package versions are not currently pinned. We recommend recording `sessionInfo()` output or committing a `renv.lock` file using `renv` to guarantee long-term reproducibility of the leukocyte deconvolution estimates.
 
 ## Data
 

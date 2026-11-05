@@ -1,4 +1,19 @@
-# Python 3.12.9
+# ==============================================================================
+# TODO [AUTHOR]: Environment and Version Consistency Confirmation
+# ------------------------------------------------------------------------------
+# Note: Discrepancies exist between the recorded audit environment and this file:
+#   - README specifies Python 3.11.
+#   - environment_used_for_clock_audit.txt documents Python 3.11.4 with:
+#       torch==2.5.1+cpu, scikit-learn==1.5.2, scipy==1.14.1,
+#       anndata==0.11.1, pyarrow==18.1.0.
+#   - This requirements.txt lists Python 3.12.9 packages:
+#       torch==2.10.0, scikit-learn==1.6.1, scipy==1.15.2, etc.
+#
+# Please confirm whether the exact production environment used for all published
+# results is Python 3.11.4 or Python 3.12.9, and align these pinned versions
+# accordingly to ensure 100% numerical reproducibility.
+# ==============================================================================
+# Python 3.12.9 (see note above)
 numpy==2.0.2
 pandas==2.2.3
 scipy==1.15.2
