@@ -25,7 +25,7 @@ Two further folders are optional:
 - **06_revision_analyses**: additional analyses requested during peer review, one subfolder per reviewer comment.
 - **07_supporting_analyses**: robustness checks that are not reported in the manuscript.
 
-To find the code behind a particular table or figure, see [PAPER_TO_CODE.md](PAPER_TO_CODE.md).
+For scientific background and study design, see [docs/ABOUT.md](docs/ABOUT.md). To find the code behind a particular table or figure, see [PAPER_TO_CODE.md](PAPER_TO_CODE.md).
 
 ## Requirements
 

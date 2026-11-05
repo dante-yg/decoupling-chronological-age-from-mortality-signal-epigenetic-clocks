@@ -1,6 +1,6 @@
 # Pipeline details
 
-This page gives the file paths, the run order with each step's inputs and outputs, and the main settings. For an overview, see the [main README](../README.md).
+This page gives the file paths, the run order with each step's inputs and outputs, and the main settings. For scientific background, see [ABOUT.md](ABOUT.md); for an overview, see the [main README](../README.md).
 
 ## File paths
 
