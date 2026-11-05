@@ -54,6 +54,25 @@ Model training in `02_model_training` takes several hours because of hyperparame
 
 More detail on each step, including the exact input and output files and the main settings, is in [docs/DETAILS.md](docs/DETAILS.md).
 
+## Smoke testing with synthetic data
+
+To verify that the code and dependencies execute properly without requiring approved dbGaP access:
+
+1. Generate synthetic datasets:
+   ```bash
+   python tools/make_synthetic_data.py
+   ```
+   This generates small simulated datasets with matching schemas into `synthetic_data/` (ignored by git).
+
+   > **Notice:** Synthetic data are generated from randomized distributions within plausible ranges solely to test that scripts run end-to-end. Output metrics and results produced from synthetic data are scientifically meaningless. Real analyses require approved access to FHS (phs000007) and WHI (phs000200) from dbGaP.
+
+2. Run in fast smoke-test mode:
+   ```bash
+   export EPICLOCK_DATA_DIR=synthetic_data
+   export EPICLOCK_SMOKE=1
+   ```
+   Setting `EPICLOCK_SMOKE=1` reduces Optuna hyperparameter tuning to 1–2 trials and neural network training to 2 epochs, allowing the pipeline to complete in minutes for verification. The default behavior on real data is completely unchanged.
+
 ## Citation
 
 If you use this code, please cite:

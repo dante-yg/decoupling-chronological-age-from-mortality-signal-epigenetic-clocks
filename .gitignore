@@ -80,3 +80,4 @@ figures/
 *.model
 *.tif
 AUTHOR_NOTES.md
+synthetic_data/
